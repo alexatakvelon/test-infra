@@ -1,5 +1,27 @@
 presubmits:
   kubernetes-sigs/agent-sandbox:
+  - name: presubmit-agent-sandbox-poc
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - image: alpine:3.20
+        command:
+        - sh
+        - -c
+        - |
+          echo "POC job running on repo: ${REPO_OWNER}/${REPO_NAME}"
+          echo "PR: ${PULL_NUMBER}, commit: ${PULL_PULL_SHA}"
+          echo "Done."
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+    annotations:
+      description: POC presubmit to verify Prow wiring
   - name: presubmit-test-autogen-up-to-date
     cluster: eks-prow-build-cluster
     # Skip ONLY config/metadata, docs/, md files, and GitHub files, but will run for site/.
